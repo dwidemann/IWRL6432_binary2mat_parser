@@ -9,9 +9,9 @@ clear all;
 % 100th frame. 
 
 %% Set file paths CHANGE THESE TO MATCH YOUR SETUP
-binFilePath = "/Users/davidwidemann/Documents/IWRL6432/data/07_29_2024_10_23_28";
+binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_22_2024_09_10_05";
 splitStrings = split(binFilePath, filesep);
-output_dir = append("mat_files_", splitStrings(length(splitStrings)));
+output_dir = append("testing_all_mat_files_", splitStrings(length(splitStrings)));
 mkdir(output_dir);
 
 binFileName = "pHistBytes";
@@ -25,8 +25,10 @@ for i = 1:length(fileList)
     end
 end
 
-max_binary2mat_file = 500;
+max_binary2mat_file = 360;
 num_mat_files = ceil(num_binary_files/max_binary2mat_file);
+lostSyncFrames = [];
+lostSyncFiles = [];
 
 %% Set UART TLV Structures
 
@@ -252,6 +254,7 @@ for output_file_num = 1 : num_mat_files
     fHist = repmat(frameStatStruct, 1, fileFrameSize);
     start_idx = 1 + (output_file_num - 1)*max_binary2mat_file;
     end_idx = min(output_file_num*max_binary2mat_file, num_binary_files);
+    row_idx = 1;
 
     for file_num = start_idx : end_idx
         thisBinFileName = binFilePath + filesep + binFileName + '_' + string(file_num) + ".bin";
@@ -294,12 +297,12 @@ for output_file_num = 1 : num_mat_files
             targetFrameNum = frameHeader.frameNumber;
             frameNum = frameHeader.frameNumber;
     
-            fHist(frameNum).targetFrameNum = targetFrameNum;
-            fHist(frameNum).header = frameHeader;
+            fHist(row_idx).targetFrameNum = targetFrameNum;
+            fHist(row_idx).header = frameHeader;
     
             dataLength = frameHeader.packetLength - frameHeaderLengthInBytes;
     
-            fHist(frameNum).bytes = dataLength; 
+            fHist(row_idx).bytes = dataLength; 
             numInputPoints = 0;
             numInputPointsMajor = 0;
             numInputPointsMinor = 0;            
@@ -749,7 +752,10 @@ for output_file_num = 1 : num_mat_files
                 end
             end
             if(lostSync)
-                disp(lostSync); %break;
+                lostSyncStr = sprintf('lost sync %d', frameNum);
+                disp(lostSyncStr);
+                lostSyncFrames = [lostSyncFrames; frameNum];
+                lostSyncFiles = [lostSyncFiles; file_num];
             end
     
             if(numInputPoints == 0)
@@ -771,32 +777,33 @@ for output_file_num = 1 : num_mat_files
             end
     
             % Store Point cloud        
-            fHist(frameNum).numInputPoints = numInputPoints;
-            fHist(frameNum).numOutputPoints = numOutputPoints;    
-            fHist(frameNum).numTargets = numTargets;
-            fHist(frameNum).pointCloud = pointCloud;
-            fHist(frameNum).targetList.numTargets = numTargets;
-            fHist(frameNum).targetList.TID = TID;
-            fHist(frameNum).targetList.S = S;
-            fHist(frameNum).targetList.EC = EC;
-            fHist(frameNum).targetList.G = G;
-            fHist(frameNum).targetList.Conf = Conf;        
-            fHist(frameNum).indexArray = mIndex;
-            fHist(frameNum).presence = presence;
-            fHist(frameNum).motionState = motionStatePerZoneTarget;
-            fHist(frameNum).rangeAzimuthHeatMapMajor = rangeAzimuthHeatMapMajor;
-            fHist(frameNum).rangeAzimuthHeatMapMinor = rangeAzimuthHeatMapMinor;
-            fHist(frameNum).rngProfileMajor = rngProfileMajor;
-            fHist(frameNum).rngProfileMinor = rngProfileMinor;
-            fHist(frameNum).sensorTimingInfo = sensorTimingInfo;
-            fHist(frameNum).sensorTemperatureInfo = sensorTemperatureInfo;
-            fHist(frameNum).sensorPowerInfo = sensorPowerInfo;
-            fHist(frameNum).microDopplerFeaturesBuf = microDopplerFeaturesBuf;
-            fHist(frameNum).timestamp = timestamp;
+            fHist(row_idx).numInputPoints = numInputPoints;
+            fHist(row_idx).numOutputPoints = numOutputPoints;    
+            fHist(row_idx).numTargets = numTargets;
+            fHist(row_idx).pointCloud = pointCloud;
+            fHist(row_idx).targetList.numTargets = numTargets;
+            fHist(row_idx).targetList.TID = TID;
+            fHist(row_idx).targetList.S = S;
+            fHist(row_idx).targetList.EC = EC;
+            fHist(row_idx).targetList.G = G;
+            fHist(row_idx).targetList.Conf = Conf;        
+            fHist(row_idx).indexArray = mIndex;
+            fHist(row_idx).presence = presence;
+            fHist(row_idx).motionState = motionStatePerZoneTarget;
+            fHist(row_idx).rangeAzimuthHeatMapMajor = rangeAzimuthHeatMapMajor;
+            fHist(row_idx).rangeAzimuthHeatMapMinor = rangeAzimuthHeatMapMinor;
+            fHist(row_idx).rngProfileMajor = rngProfileMajor;
+            fHist(row_idx).rngProfileMinor = rngProfileMinor;
+            fHist(row_idx).sensorTimingInfo = sensorTimingInfo;
+            fHist(row_idx).sensorTemperatureInfo = sensorTemperatureInfo;
+            fHist(row_idx).sensorPowerInfo = sensorPowerInfo;
+            fHist(row_idx).microDopplerFeaturesBuf = microDopplerFeaturesBuf;
+            fHist(row_idx).timestamp = timestamp;
             timestamp = [];
             if(isempty(predictionHist) ~= 1)
-                fHist(frameNum).predictionHist = predictionHist;
+                fHist(row_idx).predictionHist = predictionHist;
             end
+            row_idx = row_idx + 1;
             
     
         end
@@ -807,7 +814,10 @@ for output_file_num = 1 : num_mat_files
     
     tempfhistSaveName = strcat(output_dir , filesep, outfile_name, '.mat')
     save(tempfhistSaveName,'fHist'); 
+    clear fHist;
 end
+
+lostSyncFiles = unique(lostSyncFiles);
 
 %% Function Declarations
 
