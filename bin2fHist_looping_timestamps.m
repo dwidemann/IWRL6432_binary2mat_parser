@@ -9,9 +9,9 @@ clear all;
 % 100th frame. 
 
 %% Set file paths CHANGE THESE TO MATCH YOUR SETUP
-binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_22_2024_09_10_05";
+binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_19_2024_09_33_26";
 splitStrings = split(binFilePath, filesep);
-output_dir = append("testing_all_mat_files_", splitStrings(length(splitStrings)));
+output_dir = append("/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/mat_files_", splitStrings(length(splitStrings)));
 mkdir(output_dir);
 
 binFileName = "pHistBytes";
