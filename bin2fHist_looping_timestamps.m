@@ -9,8 +9,39 @@ clear all;
 % 100th frame. 
 
 %% Set file paths CHANGE THESE TO MATCH YOUR SETUP
-binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_19_2024_09_33_26";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_19_2024_09_33_26";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_15_2024_12_00_04";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_15_2024_09_53_10";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_14_2024_08_59_20";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/08_01_2024_09_57_07";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/07_31_2024_10_08_31";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/07_29_2024_10_15_32";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/07_25_2024_12_58_20";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/07_25_2024_10_03_47";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/07_24_2024_11_58_22";
+% splitStrings = split(binFilePath, filesep);
+
+% make sure that this has the same troublemakers-tv,
+% troublemakers-whiteboard as above
+% output_dir = append("/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-tv/mat_files_", splitStrings(length(splitStrings)));
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_22_2024_09_10_05";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_21_2024_09_31_37";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_19_2024_09_32_18";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_15_2024_09_49_01";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_14_2024_09_23_06";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_05_2024_08_56_44";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/08_01_2024_09_56_27";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/07_31_2024_10_03_08";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/07_29_2024_10_23_28";
+% binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/07_25_2024_10_11_10";
+binFilePath = "/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/07_24_2024_12_01_44";
 splitStrings = split(binFilePath, filesep);
+
+% make sure that this has the same troublemakers-tv,
+% troublemakers-whiteboard as above
 output_dir = append("/Users/davidwidemann/Documents/sf-iwrl6432-data-collects/troublemakers-whiteboard/mat_files_", splitStrings(length(splitStrings)));
 mkdir(output_dir);
 
